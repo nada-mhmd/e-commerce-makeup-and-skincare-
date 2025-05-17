@@ -69,3 +69,146 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 >>>>>>> 2e2bb80ef2b17ba57ab8eff7a5e64b50b093c029
+# E-Commerce Microservices – Makeup & Skincare
+
+A microservices-based e-commerce application built with React, Node.js, MongoDB, Docker, and Kubernetes. The app handles users, transactions, reporting, and notifications in a modular, scalable way.
+
+---
+
+## Overview
+
+This project demonstrates a full-stack e-commerce platform using:
+- **Microservices Architecture**
+- **Docker & Docker Compose**
+- **Kubernetes for orchestration**
+- **Prometheus + Grafana for monitoring**
+- **MongoDB for data persistence**
+
+---
+
+##  Architecture
+
+```
+Frontend (React)
+     |
+[User Service] --- [Transaction Service] --- [Reporting Service]
+     \                     |                       /
+      \----> MongoDB <-----|------> Notification Service (Optional)
+                          |
+                   [Prometheus + Grafana]
+```
+
+Each service is containerized and deployed independently, making the system scalable and maintainable.
+
+---
+
+##  Tech Stack
+
+| Layer          | Technology                       |
+|----------------|-----------------------------------|
+| Frontend       | React.js                          |
+| Backend        | Node.js (Express)                 |
+| Database       | MongoDB                           |
+| Containerization | Docker, Docker Compose          |
+| Orchestration  | Kubernetes                        |
+| Monitoring     | Prometheus + Grafana              |
+| Authentication | JWT                               |
+
+---
+
+##  Microservices Description
+
+| Service           | Description                                      |
+|------------------|--------------------------------------------------|
+| **User Service**  | Handles signup, login, and user data             |
+| **Notification Service** | Sends alerts for user actions |
+| **Frontend**      | React app to interact with backend services      |
+| **MongoDB**       | Stores user data, transactions, and reports      |
+
+---
+
+##  Docker Setup
+
+### Build and Run Locally
+
+```bash
+docker-compose up --build
+```
+
+All services will be started along with MongoDB.
+
+---
+
+## ☸️ Kubernetes Deployment
+
+You can deploy services on Kubernetes using:
+
+```bash
+kubectl apply -f k8s/namespace.yaml
+kubectl apply -f k8s/mongo-deployment.yaml
+kubectl apply -f k8s/backend-deployment.yaml
+kubectl apply -f k8s/frontend-deployment.yaml
+kubectl apply -f k8s/prometheus-deployment.yaml
+kubectl apply -f k8s/grafana-deployment.yaml
+# and all other services
+```
+
+---
+
+##  Monitoring
+
+### Prometheus
+
+Runs as a pod and collects metrics from the services.
+
+### Grafana
+
+Provides dashboards and visualizations for real-time monitoring.
+
+Access Grafana:
+
+```bash
+kubectl port-forward service/grafana-service 3000:3000
+```
+
+Default login: `admin / admin`
+
+---
+
+## ⚙️ Environments
+
+Currently supports:
+- `dev` via default `docker-compose.yml`
+- To support staging and prod, duplicate the file as:
+  - `docker-compose.staging.yml`
+  - `docker-compose.prod.yml`
+
+You can define environment-specific variables in `.env.dev`, `.env.prod`, etc.
+
+---
+
+##  How to Run ?
+
+### Option 1: Docker Compose
+
+```bash
+docker-compose up --build
+```
+
+### Option 2: Kubernetes (Minikube or any cluster)
+
+```bash
+kubectl apply -f k8s/
+```
+
+---
+
+##  API Endpoints (Examples)
+
+### User Service
+
+```http
+POST /api/users/register
+POST /api/users/login
+GET /api/users/profile
+```

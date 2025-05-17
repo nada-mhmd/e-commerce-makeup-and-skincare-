@@ -36,7 +36,6 @@
     "mongoose": "^8.3.4",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
-    "nreact": "^1.0.0",
     "react": "^18.3.0",
     "react-bootstrap": "^2.10.2",
     "react-bootstrap-star-rating": "^3.5.5-alpha.0.3",

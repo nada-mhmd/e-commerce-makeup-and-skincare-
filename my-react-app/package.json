@@ -28,7 +28,6 @@
     "i": "^0.3.7",
     "mdb-react-ui-kit": "^8.0.0",
     "npm": "^10.7.0",
-    "nreact": "^1.0.0",
     "react": "^18.3.0",
     "react-bootstrap": "^2.10.2",
     "react-bootstrap-star-rating": "^3.5.5-alpha.0.3",

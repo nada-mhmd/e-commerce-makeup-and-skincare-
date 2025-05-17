@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./my-react-app
+    container_name: frontend-container
+    ports:
+      - "80:80"
+    volumes:
+      - ./my-react-app:/app
+    restart: always
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./BackEnd
+    container_name: backend-container-new
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000
+      - MongoDBUrl=mongodb+srv://nada1:noda123@cluster0.d9i6tty.mongodb.net/care?retryWrites=true&w=majority&appName=Cluster0
+      - JWT_SECRET=secretkey123
+      - base_Url=http://backend:4000
+    volumes:
+      - ./BackEnd/upload:/app/upload
+    restart: always
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo-container
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo-data:/data/db
+    restart: always
+    networks:
+      - app-network
+
+  notification:
+    build:
+      context: ./notification-service
+    container_name: notification-service
+    ports:
+      - "5001:5001"
+    environment:
+      - PORT=5001
+      - MAIL_USER=your_email@gmail.com
+      - MAIL_PASS=your_app_password
+    restart: always
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local

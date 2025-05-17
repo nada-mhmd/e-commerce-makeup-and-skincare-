@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo-staging
+    networks:
+      - staging-net
+    volumes:
+      - mongo_data_staging:/data/db
+
+  backend:
+    image: backend-service:staging
+    container_name: backend-staging
+    environment:
+      - MongoDBUrl=mongodb://mongo:27017/care
+      - PORT=4000
+      - JWT_SECRET=staging-secret-key
+    depends_on:
+      - mongo
+    networks:
+      - staging-net
+
+  frontend:
+    image: frontend-service:staging
+    container_name: frontend-staging
+    environment:
+      - REACT_APP_BACKEND_URL=http://backend:4000
+    depends_on:
+      - backend
+    networks:
+      - staging-net
+
+  notification:
+    image: notification-service:staging
+    container_name: notification-staging
+    environment:
+      - PORT=5000
+      - NOTIFY_KEY=staging-notify-key
+    depends_on:
+      - backend
+    networks:
+      - staging-net
+
+networks:
+  staging-net:
+
+volumes:
+  mongo_data_staging:

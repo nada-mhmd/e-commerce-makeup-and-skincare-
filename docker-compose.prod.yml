@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo-prod
+    restart: always
+    networks:
+      - prod-net
+    volumes:
+      - mongo_data_prod:/data/db
+
+  backend:
+    image: backend-service:prod
+    container_name: backend-prod
+    restart: always
+    environment:
+      - MongoDBUrl=mongodb://mongo:27017/care
+      - PORT=4000
+      - JWT_SECRET=prod-super-secret
+    depends_on:
+      - mongo
+    networks:
+      - prod-net
+
+  frontend:
+    image: frontend-service:prod
+    container_name: frontend-prod
+    restart: always
+    environment:
+      - REACT_APP_BACKEND_URL=http://backend:4000
+    depends_on:
+      - backend
+    networks:
+      - prod-net
+    ports:
+      - "80:80"  # بس بنفتح ده عشان المستخدمين يدخلوا على الموقع
+
+  notification:
+    image: notification-service:prod
+    container_name: notification-prod
+    restart: always
+    environment:
+      - PORT=5000
+      - NOTIFY_KEY=prod-notify-key
+    depends_on:
+      - backend
+    networks:
+      - prod-net
+
+networks:
+  prod-net:
+
+volumes:
+  mongo_data_prod:
